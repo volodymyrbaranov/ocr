@@ -1,3 +1,4 @@
+import re
 import pytesseract
 import numpy as np
 import cv2
@@ -9,6 +10,9 @@ def bytes2cv2(b):
 
 
 def preprocess(image):
+    if len(np.array(image).shape) == 3:
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (3, 3), 0)
     thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)[1]
@@ -19,8 +23,16 @@ def preprocess(image):
     return invert
 
 
+def postprocess_text(text):
+    text = re.sub(' +', ' ', text)
+    text = text.replace('\f', '')
+    text = re.sub('(\d{2}\:\d{2})', '', text)
+    return text
+
+
 def get_text(b):
     img = bytes2cv2(b)
     img = preprocess(img)
     text = pytesseract.image_to_string(img, lang="rus")
+    text = postprocess_text(text)
     return text.strip()
