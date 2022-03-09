@@ -9,7 +9,3 @@ RUN pip install -U pip
 COPY . .
 
 RUN pip install -r requirements.txt
-
-ENV FLASK_APP=ocr
-
-EXPOSE 5001
