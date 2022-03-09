@@ -1,3 +1,4 @@
+import re
 import pytesseract
 import numpy as np
 import cv2
@@ -22,8 +23,16 @@ def preprocess(image):
     return invert
 
 
+def postprocess_text(text):
+    text = re.sub(' +', ' ', text)
+    text = text.replace('\f', '')
+    text = re.sub('(\d{2}\:\d{2})', '', text)
+    return text
+
+
 def get_text(b):
     img = bytes2cv2(b)
     img = preprocess(img)
     text = pytesseract.image_to_string(img, lang="rus")
+    text = postprocess_text(text)
     return text.strip()
