@@ -13,4 +13,3 @@ RUN pip install -r requirements.txt
 ENV FLASK_APP=ocr
 
 EXPOSE 5001
-CMD ["flask run --port 5001"]

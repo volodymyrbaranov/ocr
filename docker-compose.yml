@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  ocr-api:
+    container_name: ocr-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "flask run"
+    volumes:
+      - .:/app
+    ports:
+      - "5001:5001"
+    environment:
+      FLASK_APP: "ocr"
+      FLASK_RUN_PORT: "5001"
