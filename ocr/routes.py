@@ -20,6 +20,8 @@ def health():
 def extract_text():
     file = request.files["file"]
     filename = file.filename
+    if not allowed_file(filename):
+        return "Not allowed file", 400
     image_id = filename.rsplit(".", 1)[0]
     app.logger.info(f"Recognize image {image_id}")
     image = file.read()
