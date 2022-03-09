@@ -6,7 +6,7 @@ import cv2
 
 def bytes2cv2(b):
     np_array = np.fromstring(b, np.uint8)
-    return cv2.imdecode(np_array, cv2.IMREAD_COLOR)
+    return cv2.imdecode(np_array, cv2.IMREAD_ANYCOLOR)
 
 
 def preprocess(image):
