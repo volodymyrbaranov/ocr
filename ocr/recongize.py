@@ -1,4 +1,3 @@
-import re
 import pytesseract
 import numpy as np
 import cv2
@@ -21,13 +20,6 @@ def preprocess(image):
     opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=1)
     invert = 255 - opening
     return invert
-
-
-def postprocess(text):
-    text = text.replace('\f', '')
-    text = re.sub(' +', ' ', text)
-    text = re.sub('(\d{2}\:\d{2})', '', text)
-    return text
 
 
 def get_text(b):

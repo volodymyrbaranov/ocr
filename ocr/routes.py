@@ -1,25 +1,8 @@
-from recongize import get_text
+from ocr import app
+
+from .recongize import get_text
+
 from flask import request, jsonify
-from logging.config import dictConfig
-from flask import Flask
-
-dictConfig({
-    "version": 1,
-    "formatters": {"default": {
-        "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
-    }},
-    "handlers": {"wsgi": {
-        "class": "logging.StreamHandler",
-        "stream": "ext://flask.logging.wsgi_errors_stream",
-        "formatter": "default"
-    }},
-    "root": {
-        "level": "INFO",
-        "handlers": ["wsgi"]
-    }
-})
-
-app = Flask(__name__)
 
 ALLOWED_EXTENSIONS = {"jpeg", "jpg", "png"}
 
@@ -35,8 +18,7 @@ def health():
 
 @app.route("/extract_text/", methods=["POST"])
 def extract_text():
-    print('asd')
-    file = request.files["image"]
+    file = request.files["file"]
     filename = file.filename
     if not allowed_file(filename):
         return "Not allowed file", 400
@@ -47,7 +29,3 @@ def extract_text():
     return jsonify(
         {"text": text}
     )
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=5001)
