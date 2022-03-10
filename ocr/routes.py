@@ -16,11 +16,11 @@ def health():
     return jsonify({"health": "ok"})
 
 
-@app.route("/extract_text/", methods=["POST"])
-def extract_text():
+@app.route("/extract_text/<ocr>", methods=["POST"])
+def extract_text(ocr):
     file = request.files["file"]
     image = file.read()
-    text = get_text(image)
+    text = get_text(image, ocr)
     return jsonify(
         {"text": text}
     )
